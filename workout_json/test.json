@@ -1,0 +1,26 @@
+{ 
+    "workout_title": "test workout",
+    "alarm_path": "sounds/open-up.mp3",
+    "regimen": [
+        {
+            "round_title": "Ready?",
+            "length": 5,
+            "rest": 0
+        },
+        {
+            "round_title": "test - 1",
+            "length": 5,
+            "rest": 3
+        },
+        {
+            "round_title": "Pomodoro - 2",
+            "length": 5,
+            "rest": 0
+        },
+        {
+            "round_title": "Pomodoro - 3",
+            "length": 5,
+            "rest": 3
+        }
+    ]
+}

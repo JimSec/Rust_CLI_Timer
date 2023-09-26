@@ -1,0 +1,97 @@
+{ 
+    "workout_title": "My favorite Kettlebell workout",
+    "alarm_path": "sounds/Ship_Bell.ogg",
+    "regimen": [
+        {
+            "round_title": "Warmup",
+            "length": 300,
+            "rest": 10
+        },
+        {
+            "round_title": "Round 1",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 2",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 3",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 4",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 5",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Sprint!",
+            "length": 180,
+            "rest": 60
+        },
+        {
+            "round_title": "Round 6",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 7",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 8",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 9",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 10",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Sprint!",
+            "length": 180,
+            "rest": 60
+        },
+        {
+            "round_title": "Round 11",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 12",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 13",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 14",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Round 15",
+            "length": 60,
+            "rest": 0
+        }
+
+    ]
+}

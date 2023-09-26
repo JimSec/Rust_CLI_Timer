@@ -1,0 +1,32 @@
+{ 
+    "workout_title": "Pomodoro - if you're so inclined",
+    "alarm_path": "sounds/open-up.mp3",
+    "regimen": [
+        {
+            "round_title": "Pomodoro - Ready?",
+            "length": 5,
+            "rest": 0
+        },
+        {
+            "round_title": "Pomodoro - 1",
+            "length": 1500,
+            "rest": 300
+        },
+        {
+            "round_title": "Pomodoro - 2",
+            "length": 1500,
+            "rest": 300
+        },
+        {
+            "round_title": "Pomodoro - 3",
+            "length": 1500,
+            "rest": 300
+        },
+        {
+            "round_title": "Pomodoro - 4",
+            "length": 1500,
+            "rest": 300
+        }
+
+    ]
+}

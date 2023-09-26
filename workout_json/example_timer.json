@@ -1,0 +1,31 @@
+{ 
+    "workout_title": "Example workout title",
+    "alarm_path": "sounds/Ship_Bell.mp3",
+    "regimen": [
+        {
+            "round_title": "Short first round",
+            "length": 30,
+            "rest": 10
+        },
+        {
+            "round_title": "Mid round 2",
+            "length": 180,
+            "rest": 60
+        },
+        {
+            "round_title": "Repeats are fine",
+            "length": 180,
+            "rest": 60
+        },
+        {
+            "round_title": "Zero length rests are valid",
+            "length": 60,
+            "rest": 0
+        },
+        {
+            "round_title": "Final rest in a workout isn't counted",
+            "length": 10,
+            "rest": 1800
+        }
+    ]
+}

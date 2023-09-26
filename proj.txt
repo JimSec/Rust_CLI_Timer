@@ -1,0 +1,16 @@
+Workout timer as a Rust learning project
+
+Goal: Custom per round interval workout timer, with workouts imported / exported as json. 
+  -  Convert to GUI later
+  -  For fun, convert to API that sends interval notifications back to client.
+
+Tasks:
+    - [DONE] Workout / Round data struct
+    - [DONE] Actual timer functionality around workouts
+    - [DONE] Play sound - threads are fun 
+    - [DONE] Pause functionality
+    - [DONE] Workout JSON import
+    - [DONE[Self selected alarm sound
+
+    - Workout JSON builder / export
+    - Convert seconds to minutes...
