@@ -10,7 +10,7 @@ Tasks:
     - [DONE] Play sound - threads are fun 
     - [DONE] Pause functionality
     - [DONE] Workout JSON import
-    - [DONE[Self selected alarm sound
+    - [DONE] Self selected alarm sound
 
     - Workout JSON builder / export
-    - Convert seconds to minutes...
+    - Add option to convert seconds to minutes...

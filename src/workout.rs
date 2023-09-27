@@ -7,7 +7,6 @@ use std::thread;
 use rodio::{Decoder, OutputStream, source::Source};
 use rdev::{listen, Event};
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
 
 static PAUSE_STATE: AtomicBool = AtomicBool::new(false);
 
@@ -33,22 +32,8 @@ pub struct Workout {
     pub regimen: Vec<Round>,
 }
 
-/*
-impl Default for Workout {
-    fn default() -> Workout {
-        Workout { 
-            workout_title: String::from("test wkt"), 
-            alarm_path: String::from("sounds/Ship_Bell.ogg"),
-            regimen:  Vec::new(),
-        }
-    }
-}
-*/
 
 impl Workout {
-    pub fn create_round(&mut self, title: String, length: f32, rest: f32,) {
-        self.regimen.push(Round {round_title: title, length: length, rest: rest,});
-    }
 
     pub fn start(&self) {
         let mut default_playsound = true;
@@ -148,7 +133,7 @@ impl Workout {
         my_wkt
     }
 
-    fn export_json_workout() {
+    fn _export_json_workout() {
         todo!()
     }
 }
