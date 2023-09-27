@@ -89,7 +89,7 @@ impl Workout {
             if get_pause() == true {
                 let saved_t = work_t - curr_t.elapsed().as_secs_f32();
                 while get_pause() == true {
-                    println!("Paused {}{}:\n{}\n\nSpace to Unpause.", message_prefix, r,  saved_t);
+                    println!("(Paused) {}{}:\n{}\n\nSpace to Unpause.", message_prefix, r,  saved_t);
                     print!("{esc}c", esc = 27 as char); //force clear terminal 
                     thread::sleep(Duration::from_millis(100));
                 }
