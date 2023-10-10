@@ -17,27 +17,27 @@ static RESTART_STATE: AtomicBool = AtomicBool::new(false);
     1 (ctrl) + 1 (shift) + 4 (R) == 6 == Restart timer round
 */
 
-static keydown_state: AtomicI8 = AtomicI8::new(0);
+static KEYDOWN_STATE: AtomicI8 = AtomicI8::new(0);
 
 pub fn increment_keypress(increment: i8) {
-    let t = keydown_state.load(Ordering::Relaxed);
+    let t = KEYDOWN_STATE.load(Ordering::Relaxed);
     // you could hold down a key that sends multiple events and int overflow
     if t + increment <= 10 {
-        keydown_state.store( t + increment, Ordering::Relaxed);
+        KEYDOWN_STATE.store( t + increment, Ordering::Relaxed);
     }
 }
 
 pub fn decrement_keypress(decrement: i8) {
-    let t = keydown_state.load(Ordering::Relaxed);
+    let t = KEYDOWN_STATE.load(Ordering::Relaxed);
     //only operate on incomplete keypress combo's
     if t - decrement > -1 {
-        keydown_state.store( t - decrement, Ordering::Relaxed);
+        KEYDOWN_STATE.store( t - decrement, Ordering::Relaxed);
     }
 }
 
 pub fn reset_keypress() {
     // Clear state on main key KeyRelease so we don't infinitly increment
-    keydown_state.store(0, Ordering::Relaxed);
+    KEYDOWN_STATE.store(0, Ordering::Relaxed);
 }
 
 pub fn get_pause() -> bool {
@@ -98,11 +98,11 @@ impl Workout {
                 }
 
                 //set global pause
-                if keydown_state.load(Ordering::Relaxed) == 5i8 {
+                if KEYDOWN_STATE.load(Ordering::Relaxed) == 5i8 {
                     set_pause(!get_pause())
                 }
                 //set global restart
-                if keydown_state.load(Ordering::Relaxed) == 4i8 {
+                if KEYDOWN_STATE.load(Ordering::Relaxed) == 4i8 {
                     set_restart(true);
                 }
             }
