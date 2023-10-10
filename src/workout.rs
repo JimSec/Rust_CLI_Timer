@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::BufReader;
 use std::process::exit;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicI8, Ordering};
 use std::time::{Instant,Duration};
 use std::thread;
 use rodio::{Decoder, OutputStream, source::Source};
@@ -9,12 +9,49 @@ use rdev::{listen, Event};
 use serde::{Deserialize, Serialize};
 
 static PAUSE_STATE: AtomicBool = AtomicBool::new(false);
+static RESTART_STATE: AtomicBool = AtomicBool::new(false);
+
+/*
+    keydown state, build an interger off keypresses to use ctrl and shift as global hotkeys
+    1 (ctrl) + 1 (shift) + 3 (space) == 5 == Pause timer
+    1 (ctrl) + 1 (shift) + 4 (R) == 6 == Restart timer round
+*/
+
+static keydown_state: AtomicI8 = AtomicI8::new(0);
+
+pub fn increment_keypress(increment: i8) {
+    let t = keydown_state.load(Ordering::Relaxed);
+    // you could hold down a key that sends multiple events and int overflow
+    if t + increment <= 10 {
+        keydown_state.store( t + increment, Ordering::Relaxed);
+    }
+}
+
+pub fn decrement_keypress(decrement: i8) {
+    let t = keydown_state.load(Ordering::Relaxed);
+    //only operate on incomplete keypress combo's
+    if t - decrement > -1 {
+        keydown_state.store( t - decrement, Ordering::Relaxed);
+    }
+}
+
+pub fn reset_keypress() {
+    // Clear state on main key KeyRelease so we don't infinitly increment
+    keydown_state.store(0, Ordering::Relaxed);
+}
 
 pub fn get_pause() -> bool {
     PAUSE_STATE.load(Ordering::Relaxed)
 }
 pub fn set_pause(level: bool) {
     PAUSE_STATE.store(level, Ordering::Relaxed);
+}
+
+pub fn get_restart() -> bool {
+    RESTART_STATE.load(Ordering::Relaxed)
+}
+pub fn set_restart(level: bool) {
+    RESTART_STATE.store(level, Ordering::Relaxed);
 }
 
 
@@ -45,9 +82,28 @@ impl Workout {
 
             fn callback(event: Event, ) {
                 match event.event_type  {
-                    // Space to pause
-                    rdev::EventType::KeyPress(rdev::Key::Space) => set_pause(!get_pause()),
+                    //Clear out Pause and Reset keys on release to avoid multiple detections
+                    rdev::EventType::KeyPress(rdev::Key::Space) => increment_keypress(3),
+                    rdev::EventType::KeyRelease(rdev::Key::Space) => reset_keypress(),
+
+                    rdev::EventType::KeyPress(rdev::Key::KeyR) => increment_keypress(2),
+                    rdev::EventType::KeyRelease(rdev::Key::KeyR) => reset_keypress(),
+                    
+                    rdev::EventType::KeyPress(rdev::Key::ControlLeft) => increment_keypress(1),
+                    rdev::EventType::KeyRelease(rdev::Key::ControlLeft) => decrement_keypress(1),
+
+                    rdev::EventType::KeyPress(rdev::Key::ShiftLeft) => increment_keypress(1),
+                    rdev::EventType::KeyRelease(rdev::Key::ShiftLeft) => decrement_keypress(1),  
                     _ => (),
+                }
+
+                //set global pause
+                if keydown_state.load(Ordering::Relaxed) == 5i8 {
+                    set_pause(!get_pause())
+                }
+                //set global restart
+                if keydown_state.load(Ordering::Relaxed) == 4i8 {
+                    set_restart(true);
                 }
             }
         });
@@ -83,22 +139,39 @@ impl Workout {
 
         // Sacrifice a little precision to never display a negative timer number
         while (curr_t.elapsed().as_secs_f32() < work_t) && (work_t - curr_t.elapsed().as_secs_f32() > 0.1) {
+            //Detect if we want to restart the round 
+            if get_restart() == true {
+                work_t = *t;
+                curr_t = Instant::now();
+                message_prefix = "(Reset!)";
+                println!(" {}{}:\n{}\n\nCTRL+Shift+Space to Unpause.", message_prefix, r,  (work_t - curr_t.elapsed().as_secs_f32()));
+                set_restart(false);
+            }
             
             //if we're paused, save our state and wait to unpause.
             thread::sleep(Duration::from_millis(100));
             if get_pause() == true {
+                //Play sound on pause
+                if playsound == true {
+                    self.play_sound(alarm_path.clone(), false);
+                }
                 let saved_t = work_t - curr_t.elapsed().as_secs_f32();
                 while get_pause() == true {
-                    println!("(Paused) {}{}:\n{}\n\nSpace to Unpause.", message_prefix, r,  saved_t);
+                    println!("(Paused) {}{}:\n{}\n\nCTRL+Shift+Space to Unpause.", message_prefix, r,  saved_t);
                     print!("{esc}c", esc = 27 as char); //force clear terminal 
                     thread::sleep(Duration::from_millis(100));
                 }
+                //Play sound on unpause too
+                if playsound == true {
+                    self.play_sound(alarm_path.clone(), false);
+                }
+
                 //Set main loop comparision vars before continuing.
                 work_t = saved_t;
                 curr_t = Instant::now();
             }
             
-            println!("{}{}:\n{}\n\nSpace to Pause.", message_prefix, r,  (work_t - curr_t.elapsed().as_secs_f32()));
+            println!("{}{}:\n{}\n\nCTRL+Shift+Space to Pause.", message_prefix, r,  (work_t - curr_t.elapsed().as_secs_f32()));
             print!("{esc}c", esc = 27 as char); //force clear terminal 
 
         }
