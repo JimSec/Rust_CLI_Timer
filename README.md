@@ -4,6 +4,8 @@ I like to do weird non-standard length workouts, and one of the biggest challeng
 
 Neither Sounds nor Workouts have to live in the respective folders.
 
+I've only ran on ubuntu, but it required `libx11-dev` and `librust-alsa-sys-dev` system packages.
+
 #### Usage:
 
 ```

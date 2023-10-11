@@ -83,10 +83,10 @@ impl Workout {
             fn callback(event: Event, ) {
                 match event.event_type  {
                     //Clear out Pause and Reset keys on release to avoid multiple detections
-                    rdev::EventType::KeyPress(rdev::Key::Space) => increment_keypress(3),
+                    rdev::EventType::KeyPress(rdev::Key::Space) => increment_keypress(5),
                     rdev::EventType::KeyRelease(rdev::Key::Space) => reset_keypress(),
 
-                    rdev::EventType::KeyPress(rdev::Key::KeyR) => increment_keypress(2),
+                    rdev::EventType::KeyPress(rdev::Key::KeyR) => increment_keypress(11),
                     rdev::EventType::KeyRelease(rdev::Key::KeyR) => reset_keypress(),
                     
                     rdev::EventType::KeyPress(rdev::Key::ControlLeft) => increment_keypress(1),
@@ -98,11 +98,11 @@ impl Workout {
                 }
 
                 //set global pause
-                if KEYDOWN_STATE.load(Ordering::Relaxed) == 5i8 {
+                if KEYDOWN_STATE.load(Ordering::Relaxed) == 7i8 {
                     set_pause(!get_pause())
                 }
                 //set global restart
-                if KEYDOWN_STATE.load(Ordering::Relaxed) == 4i8 {
+                if KEYDOWN_STATE.load(Ordering::Relaxed) == 13i8 {
                     set_restart(true);
                 }
             }
