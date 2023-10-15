@@ -22,7 +22,7 @@ static KEYDOWN_STATE: AtomicI8 = AtomicI8::new(0);
 pub fn increment_keypress(increment: i8) {
     let t = KEYDOWN_STATE.load(Ordering::Relaxed);
     // you could hold down a key that sends multiple events and int overflow
-    if t + increment <= 10 {
+    if t + increment <= 30 {
         KEYDOWN_STATE.store( t + increment, Ordering::Relaxed);
     }
 }
